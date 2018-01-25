@@ -1,72 +1,83 @@
-// Creación de un prompt que permita el acceso a las dos funciones
+//Dos funciones cifrar y descifrar , prompt que me pida qué quiero hacer , si 1 hago esto si 2 esto otro
 
-function cesar() {
-
+function ejCifradoCesar() {
     do {
-        var string = prompt("Ingrese texto")
-    }
-    while (!string || !/^[a-zA-Z\s]*$/.test(string)); // valida que solo ingrese  texto y espacios entre texto
+        var respuestaUsuario = prompt("Ingresa: \n 1 Si quieres cifrar \n 2 Si quieres descifrar");
+        if (respuestaUsuario != "") {
+            if (respuestaUsuario == "1") {
+                cifrar();
+            } else if (respuestaUsuario == "2") {
+                descifrar();
+            } else {
+                alert("La opción ingresada no es Válida. Intentalo nuevamente.");
+            }
+        }
+    } while (respuestaUsuario == "" || (respuestaUsuario != "1" && respuestaUsuario != "2"));
+}
 
+var cifrar = function(ingresaPalabra) {
+    do {
+        ingresaPalabra = prompt("Ingresa la palabra que quieres cifrar:");
 
-    var codigsCesar = "";
+        var cifrado = ''; //Haciendo una variable de tipo string vacía
 
+        if (/^[a-zA-Z]*$/.test(ingresaPalabra)) { // Metodo test() revisa si la palabra cumple con la expresion regular y en tal caso retorna true
 
-    for (i = 0; i < string.length; i++) {
-        var numberCodeAscii = string.charCodeAt(i); // obtenemos el código ASCII
-        if (numberCodeAscii >= 65 && numberCodeAscii <= 90) { // condición codigo ASCII (Valores Mayusculas)
-            var valueCapitalLetter = (numberCodeAscii - 65 + 33) % 26 + 65; // Obtener el nuevo código ASCII mediante fórmula
-            var capitalLetter = String.fromCharCode(valueCapitalLetter); // convierte el nuevo ASCII en una letra del alfabeto
-            codeCipher += capitalLetter; // concatenamos para formar la palabra
+            for (var i = 0; i < ingresaPalabra.length; i++) { //Con un for recorremos toda la palabra ingresada
 
-        } else if (numberCodeAscii >= 97 && numberCodeAscii <= 122) { // condición código ASCII (Valores minúsculas)
-            var valueLetterLower = (numberCodeAscii - 97 + 33) % 26 + 97; //Obtener el nuevo código ASCII mediante fórmula
-            var letterLower = String.fromCharCode(valueLetterLower); //convertir el nuevo ASCII en letra del alfabeto
-            codeCipher += letterLower; // concatenar para formar la nueva palabra
+                var aCifrar = ingresaPalabra[i]; // Creamos una variable que identifique el carácter a cifrar
 
-        } else if (numberCodeAscii == 32) { // si el caracter es un espacio vacio
-            var space = " ";
-            codeCipher += space;
+                if (aCifrar.match(/[a-z]/i)) { // Comprobamos que sea una letra
+
+                    var toAscci = ingresaPalabra.charCodeAt(i); //Y buscamos el número Ascci de esa letra
+
+                    if ((toAscci >= 65) && (toAscci <= 90)) // Si son mayúsculas ocupamos:
+                        aCifrar = String.fromCharCode(((toAscci - 65 + 33) % 26) + 65);
+
+                    else if ((toAscci >= 97) && (toAscci <= 122)) // Si son minúsculas ocupamos:
+                        aCifrar = String.fromCharCode(((toAscci - 97 + 33) % 26) + 97);
+                }
+                cifrado += aCifrar; // Creamos la nueva cadena
+            }
+            return alert(cifrado); // Retornamos un alert con el mensaje encriptado
+        } else {
+            alert('Ingresa un Texto Válido');
         }
 
-    }
-    return document.write("Texto original: " + string + "  ======= " + "Texto codificado : " + codeCipher);
+    } while (ingresaPalabra == "" || /^[a-zA-Z]*$/.test(ingresaPalabra) === false); // 
 
-}
-cipher(); // llama a la función
+};
 
-
-function decipher() {
+var descifrar = function(ingresaPalabra) {
     do {
-        var string = prompt("Ingrese texto")
-    }
-    while (!string || !/^[a-zA-Z\s]*$/.test(string)); // valida que solo ingrese  texto y espacio entre texto
+        ingresaPalabra = prompt("Ingresa la palabra que quieres descifrar:");
 
-    var codeDecipher = "";
+        var descifrado = ''; //Haciendo una variable de tipo string vacía
 
+        if (/^[a-zA-Z]*$/.test(ingresaPalabra)) { // Metodo test() revisa si la palabra cumple con la expresion regula y en tal caso retorna true
 
-    for (i = 0; i < string.length; i++) {
+            for (var i = 0; i < ingresaPalabra.length; i++) { //Con un for recorremos toda la palabra ingresada
 
-        var numberCodeAscii = string.charCodeAt(i); // obtenemos el código ASCII
+                var aDescifrar = ingresaPalabra[i]; // Creamos una variable que identifique el caracter a descifrar
 
-        if (numberCodeAscii >= 65 && numberCodeAscii <= 90) { // validando para letras mayúsculas
-            var valueCapitalLetter = (numberCodeAscii + 65 - 33) % 26 + 65; // código Ascii de la nueva letra
-            var capitalLetter = String.fromCharCode(valueCapitalLetter); // convierte el nuevo ASCII en una letra del alafabeto
-            codeDecipher += capitalLetter; // concatenamos
+                if (aDescifrar.match(/[a-z]/i)) { // Comprobamos que sea una letra
 
-        } else if (numberCodeAscii >= 97 && numberCodeAscii <= 122) { // validando para letras minusculas
-            var valueLetterLower = (numberCodeAscii + 97 - 45) % 26 + 97; // código ASCII de la nueva letra
-            var letterLower = String.fromCharCode(valueLetterLower); //convierte el nuevo ASCII en una letra del alfabeto
-            codeDecipher += letterLower; // concatenamos la nueva palabra
+                    var toAscci = ingresaPalabra.charCodeAt(i); //Y buscamos el número Ascci de esa letra
 
-        } else if (numberCodeAscii == 32) { // si el caracter es un espacio vacio
-            var space = " ";
-            codeDecipher += space; // concatenamos el mismo valor
+                    if ((toAscci >= 65) && (toAscci <= 90)) // Si son mayúsculas ocupamos:
+                        aDescifrar = String.fromCharCode(((toAscci - 65 - 7 + 52) % 26) + 65);
+
+                    else if ((toAscci >= 97) && (toAscci <= 122)) // Si son minúsculas ocupamos:
+                        aDescifrar = String.fromCharCode(((toAscci - 97 - 7 + 52) % 26) + 97);
+                }
+                descifrado += aDescifrar; // Creamos la nueva cadena
+            }
+            return alert(descifrado); // Retornamos un alert con el mensaje desencriptado
+        } else {
+            alert('Ingresa un Texto Válido');
         }
-    }
-    return document.write("Texto codificado :" + string + " ========  " + "Texto original : \n " + codeDecipher); // muestra la palabra decodificada
-    // muestra mensaje en la página web Index
-}
-decipher(); // llama a la función
+    } while (ingresaPalabra == "" || /^[a-zA-Z]*$/.test(ingresaPalabra) === false);
 
-// Si ingresa otra opción no definida muestra una alerta
-alert("Ingrese una opción válida");
+}
+
+ejCifradoCesar();
